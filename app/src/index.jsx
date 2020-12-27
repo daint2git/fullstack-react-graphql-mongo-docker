@@ -10,7 +10,7 @@ import {
 } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: `${process.env.APP_URL}/api`,
+  uri: process.env.API_URL,
   cache: new InMemoryCache(),
 });
 
@@ -33,7 +33,7 @@ function BookList() {
   return (
     <div>
       {data.books.map(book => (
-        <div key={book.id} style={{ borderBottom: '1px solid gray' }}>
+        <div key={book.id} style={{ borderBottom: '1px solid red' }}>
           <h3>{book.title}</h3>
           <p>author {book.author}</p>
           <span>{book.createdAt}</span>

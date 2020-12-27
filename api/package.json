@@ -26,6 +26,7 @@
     "build": "webpack --mode=production",
     "start": "yarn build && node build/main.js",
     "dev": "nodemon --exec babel-node src/index.js",
-    "seed": "babel-node seeds/seed.js"
+    "seed": "babel-node seeds/seed.js",
+    "lint": "eslint . --ext js"
   }
 }

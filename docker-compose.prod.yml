@@ -5,31 +5,42 @@ services:
     container_name: my_app
     build:
       context: .
-      dockerfile: ./app/Dockerfile
+      dockerfile: ./app/Dockerfile.prod
+    restart: unless-stopped
     ports:
       - 80:80
+    depends_on:
+      - api
     networks:
       - my_network
   api:
     container_name: my_api
     build:
       context: .
-      dockerfile: ./api/Dockerfile
+      dockerfile: ./api/Dockerfile.prod
+    restart: unless-stopped
     ports:
       - 1234:4000
+    depends_on:
+      - db
     networks:
       - my_network
   db:
     container_name: my_db
     image: mongo
+    restart: unless-stopped
     ports:
       - 27017:27017
-    # volumes:
-    #   - ./db/data/db:/data/db
+    volumes:
+      - db-data:/data/db
     environment:
       - MONGO_INITDB_DATABASE=my_db
     networks:
       - my_network
+
+volumes:
+  db-data:
+    driver: local
 
 networks:
   my_network:

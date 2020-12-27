@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: my_app
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile.dev
+    ports:
+      - 6969:6969
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./app/src:/usr/app/src
+      - ./app/node_modules:/usr/app/node_modules
+    networks:
+      - my_network
+  api:
+    container_name: my_api
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile.dev
+    ports:
+      - 4000:4000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./api/src:/usr/api/src
+      - ./api/node_modules:/usr/api/node_modules
+    depends_on:
+      - db
+    networks:
+      - my_network
+  db:
+    container_name: my_db
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=my_db
+    networks:
+      - my_network
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  my_network:
+    driver: bridge

@@ -1,0 +1,16 @@
+
+FROM node:12-alpine
+
+WORKDIR /usr/app
+
+ARG CODE_PATH=./app
+
+COPY ${CODE_PATH}/package.json ${CODE_PATH}/yarn.lock ./
+
+# RUN yarn install --frozen-lockfile
+
+COPY ${CODE_PATH}/ ./
+
+EXPOSE 6969
+
+CMD ["sh", "-c", "yarn install --frozen-lockfile && yarn dev"]
