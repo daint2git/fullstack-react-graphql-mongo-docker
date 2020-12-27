@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: my_app
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - my_network
+  api:
+    container_name: my_api
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    ports:
+      - 1234:4000
+    networks:
+      - my_network
+  db:
+    container_name: my_db
+    image: mongo
+    ports:
+      - 27017:27017
+    # volumes:
+    #   - ./db/data/db:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=my_db
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
